@@ -7,16 +7,15 @@ import MainWrapper from '../../commons/MainWrapper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { ALIGN, SIZE, WIGHT } from '../../helpers/constants';
 
-const Login = (props) => {
-
+const Login = ({ navigation }) => {
     const handleLogin = () => {
-        props.navigation.navigate("home")
+        navigation.navigate("Home")
     }
     return (
         <MainWrapper>
             {/* <View style={{ flex: 0.7 }}></View> */}
             <KeyboardAwareScrollView style={{ flex: 1, flexDirection: "column-reverse", paddingBottom: 20 }}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, paddingHorizontal: 20 }}>
                     <View>
                         <CustomText>Welcome</CustomText>
                         <CustomText>back!</CustomText>
