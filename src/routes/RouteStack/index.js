@@ -1,5 +1,6 @@
 import Login from "../../containers/Login";
 import SplashScreen from "../../containers/SplashScreen";
+import Home from "../../containers/Home"
 
 export default [
     {
@@ -9,5 +10,9 @@ export default [
     {
         path: "Login",
         component: Login
+    },
+    {
+        path: "Home",
+        component: Home
     }
 ]
