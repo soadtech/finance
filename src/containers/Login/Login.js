@@ -7,7 +7,11 @@ import MainWrapper from '../../commons/MainWrapper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { ALIGN, SIZE, WIGHT } from '../../helpers/constants';
 
-const Login = () => {
+const Login = (props) => {
+
+    const handleLogin = () => {
+        props.navigation.navigate("home")
+    }
     return (
         <MainWrapper>
             {/* <View style={{ flex: 0.7 }}></View> */}
@@ -23,7 +27,7 @@ const Login = () => {
                         <CustomText color="gray" size={SIZE.SMALL} align={ALIGN.RIGHT} weight={WIGHT.NORMAL}>Forgot password?</CustomText>
                     </View>
                     <View style={{ flex: 1, marginTop: 30 }}>
-                        <CustomButtom>Sign in</CustomButtom>
+                        <CustomButtom handler={handleLogin}>Sign in</CustomButtom>
                     </View>
                 </View>
             </KeyboardAwareScrollView>

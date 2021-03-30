@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     input: {
-        borderBottomWidth: 0.5,
+        borderBottomWidth: 0.7,
         borderBottomColor: "white",
         paddingVertical: 10,
         fontSize: 20,

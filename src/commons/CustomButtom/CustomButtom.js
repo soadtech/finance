@@ -3,9 +3,9 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { ALIGN, COLORS, SIZE, WIGHT } from '../../helpers/constants';
 import CustomText from '../CustomText';
 
-const CustomButtom = ({ children }) => {
+const CustomButtom = ({ children, handler }) => {
     return (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={handler} style={styles.button}>
             <CustomText size={SIZE.MEDIUM} align={ALIGN.CENTER} weight={WIGHT.SEMI_BOLD}>{children}</CustomText>
         </TouchableOpacity>
     );
