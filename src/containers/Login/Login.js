@@ -15,7 +15,7 @@ const Login = ({ navigation }) => {
         <MainWrapper>
             {/* <View style={{ flex: 0.7 }}></View> */}
             <KeyboardAwareScrollView style={{ flex: 1, flexDirection: "column-reverse", paddingBottom: 20 }}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, paddingHorizontal: 20 }}>
                     <View>
                         <CustomText>Welcome</CustomText>
                         <CustomText>back!</CustomText>
