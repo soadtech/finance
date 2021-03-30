@@ -10,7 +10,7 @@ const Avatar = ({ src }) => {
 }
 const styles = StyleSheet.create({
     avatar: {
-
+        alignSelf: 'center'
     },
     imageAvatar: {
         width: 60,
