@@ -3,10 +3,9 @@ import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import Avatar from '../../commons/Avatar/Avatar';
 import CustomText from '../../commons/CustomText';
 import MainWrapper from '../../commons/MainWrapper';
-import CardStatis from '../../components/CardStatis/CardStatis';
 import Header from '../../components/Header';
-import * as Icons from '../../commons/Icons'
 import { ALIGN, COLORS, SIZE, WIGHT } from '../../helpers/constants';
+import FloatingButton from "../../components/FloatingButton"
 
 const Home = () => {
     return (
@@ -21,7 +20,7 @@ const Home = () => {
             </View>
 
             <View style={styles.body}>
-                <Text>Hola</Text>
+                <FloatingButton style={{ bottom: 100, right: 50 }} />
             </View>
         </MainWrapper>
 
@@ -31,7 +30,9 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         backgroundColor: COLORS.BLUE,
-        padding: 30
+        padding: 30,
+        justifyContent: "center",
+        alignItems: "flex-end"
     },
     hero: {
         flex: 0.2,
