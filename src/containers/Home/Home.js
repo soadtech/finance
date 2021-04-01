@@ -19,7 +19,7 @@ const Home = () => {
 
             <View style={styles.body}>
                 <View style={{ flex: 0.3, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <CustomText color="#000" align={ALIGN.LEFT}>Statistics</CustomText>
+                    <CustomText color="#000" align={ALIGN.LEFT}>Estadisticas</CustomText>
                     <CustomText size={SIZE.SMALL} color={COLORS.SECONDARY} align={ALIGN.LEFT}>See all</CustomText>
                 </View>
                 <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
