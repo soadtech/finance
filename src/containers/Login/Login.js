@@ -12,7 +12,7 @@ const Login = ({ navigation }) => {
         navigation.navigate("Home")
     }
     return (
-        <MainWrapper>
+        <MainWrapper login>
             {/* <View style={{ flex: 0.7 }}></View> */}
             <KeyboardAwareScrollView style={{ flex: 1, flexDirection: "column-reverse", paddingBottom: 20 }}>
                 <View style={{ flex: 1, paddingHorizontal: 20 }}>

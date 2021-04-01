@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Avatar from '../../commons/Avatar/Avatar';
 import * as Icons from "../../commons/Icons"
+import { COLORS } from '../../helpers/constants';
 
 const Header = () => {
     return (
@@ -15,8 +16,11 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
-        padding: 20,
-        alignItems: "center"
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+        alignItems: "center",
+        backgroundColor: COLORS.WHITE_LIGHT
     }
+
 })
 export default Header;

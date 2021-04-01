@@ -3,17 +3,24 @@ import { View, StyleSheet, SafeAreaView, StatusBar, ImageBackground } from 'reac
 import { COLORS } from '../../helpers/constants';
 import WrapperPadding from '../WrapperPadding/WrapperPadding';
 
-const MainWrapper = ({ children }) => {
+const MainWrapper = ({ children, login }) => {
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor={COLORS.PRIMARY} />
-            <ImageBackground source={require("../../assets/background.png")} style={{ flex: 1 }}>
-                <View style={{ flex: 1 }}>
+            <StatusBar barStyle="dark-content" backgroundColor={COLORS.WHITE_LIGHT} s />
+            {login ? (
+                <ImageBackground source={require("../../assets/background.png")} style={{ flex: 1 }}>
+                    <View style={{ flex: 1 }}>
+                        {children}
+                    </View>
+                </ImageBackground>
+            ) :
+                <View style={{ flex: 1, backgroundColor: COLORS.BLUE }}>
                     {children}
                 </View>
-            </ImageBackground>
+            }
 
         </SafeAreaView>
+
     );
 }
 
