@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 48 / 2,
-        backgroundColor: "#FFF"
+        backgroundColor: "#F090B4"
     }
 })
 

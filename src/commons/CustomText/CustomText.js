@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text } from 'react-native';
 import { COLORS, SIZE, WIGHT, ALIGN } from '../../helpers/constants';
 
-const CustomText = ({ children, size, weight, align, color }) => {
+const CustomText = ({ children, size, weight, align, color, style }) => {
 
     const textStyle = {
         color: color,
@@ -12,7 +12,7 @@ const CustomText = ({ children, size, weight, align, color }) => {
     };
 
     return (
-        <Text style={textStyle}>{children}</Text>
+        <Text style={[textStyle, style]}>{children}</Text>
     );
 }
 

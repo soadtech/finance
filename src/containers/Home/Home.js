@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import Avatar from '../../commons/Avatar/Avatar';
 import CustomText from '../../commons/CustomText';
@@ -13,6 +13,12 @@ import CardPeople from '../../components/CardPeople/CardPeople';
 moment.locale('es');
 
 const Home = () => {
+    const [today, setToday] = useState(moment().format('LL'))
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         setToday(moment().format('LTS'))
+    //     }, 1000)
+    // }, [])
     return (
         <MainWrapper>
             <Header />
@@ -20,34 +26,29 @@ const Home = () => {
                 <View>
                     <CustomText size={SIZE.MEDIUM} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>Hola, Fernando Ropero</CustomText>
                     <CustomText size={SIZE.BIG} color="#000" align={ALIGN.LEFT} weight={WIGHT.SEMI_BOLD}>Good Afternoon</CustomText>
-                    <CustomText size={SIZE.SMALL} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>{moment().format("LL")}</CustomText>
+                    <CustomText size={SIZE.SMALL} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>{today}</CustomText>
                 </View>
             </View>
 
             <View style={styles.body}>
                 <View style={{ flex: 1 }}>
-                    <CustomText color="#000" align={ALIGN.LEFT}>Statistics</CustomText>
+
                     <CardStatis ico={<Icons.SvgGraphOne />} color="#fff" title="Income" cant="7,298" background={COLORS.SECONDARY} />
                     <CardStatis ico={<Icons.SvgGraphTwo />} color="#000" title="Outcome" cant="1,298" background={COLORS.WHITE} />
                 </View>
 
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1.5 }}>
                     <CustomText size={SIZE.MEDIUM} color="#000" align={ALIGN.LEFT}>Your recent transactions</CustomText>
                     <View>
-                        <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginTop: 10, paddingVertical: 13 }}>
-                            <CardPeople style={{ marginLeft: 10 }} />
-                            <CardPeople style={{ marginLeft: 10 }} />
-                            <CardPeople style={{ marginLeft: 10 }} />
+                        <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginTop: 10, paddingVertical: 15 }}>
+                            <CardPeople name="Fernando Ropero" photo={require("../../assets/avatar.jpg")} cant="18.000" date={moment().format("LLL")} typeCant="+" style={{ marginLeft: 10 }} />
+                            <CardPeople name="Fernando Ropero" photo={require("../../assets/avatar.jpg")} cant="18.000" date={moment().format("LLL")} typeCant="+" style={{ marginLeft: 10 }} />
+                            <CardPeople name="Fernando Ropero" photo={require("../../assets/avatar.jpg")} cant="18.000" date={moment().format("LLL")} typeCant="+" style={{ marginLeft: 10 }} />
                         </ScrollView>
                     </View>
                 </View>
 
-
-
-
-
-
-                <FloatingButton style={{ bottom: 100, right: 50 }} />
+                <FloatingButton style={{ bottom: 80, right: 50 }} />
             </View>
         </MainWrapper>
 
