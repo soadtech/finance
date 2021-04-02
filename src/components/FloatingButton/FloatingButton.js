@@ -117,12 +117,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         shadowRadius: 10,
-        shadowColor: COLORS.PRIMARY,
+        shadowColor: COLORS.SECONDARY,
         shadowOpacity: 0.3,
         shadowOffset: { height: 10 }
     },
     menu: {
-        backgroundColor: COLORS.PRIMARY
+        backgroundColor: COLORS.SECONDARY
     },
     secondary: {
         width: 48,
