@@ -7,16 +7,17 @@ import {
     KeyboardAvoidingView,
     ScrollView,
 } from 'react-native';
-import BottomSheet from 'reanimated-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import BottomSheet from '@gorhom/bottom-sheet';
 import Stepper from 'react-native-stepper-ui';
 import HeaderBack from '../../components/HeaderBack';
 import { ALIGN, COLORS, SIZE } from '../../helpers/constants';
 import CustomText from '../../commons/CustomText';
 import CustomInput from '../../commons/CustomInput';
 import CustomButtom from '../../commons/CustomButtom/CustomButtom';
-import MainWrapper from '../../commons/MainWrapper/MainWrapper';
 import CardItemContact from '../../components/CardItemContact';
+import { useDispatch, useSelector } from "react-redux"
+import { openBottomSheetAction } from '../../store/actions/commonsActions';
 
 const HeaderStepBack = ({ handleBack, active, content, tittle }) => {
     return (
@@ -85,6 +86,11 @@ const StepTwo = () => {
     );
 };
 const StepThree = () => {
+    const dispath = useDispatch()
+    const handlerUpButtomSheet = () => {
+        console.log("hola")
+        dispath(openBottomSheetAction())
+    }
     return (
         <View
             style={{
@@ -101,7 +107,7 @@ const StepThree = () => {
                     <CardItemContact />
                     <CardItemContact />
                     <View>
-                        <CustomButtom style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
+                        <CustomButtom handler={handlerUpButtomSheet} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
                             Crear un nuevo deudor
                         </CustomButtom>
                     </View>
@@ -147,21 +153,19 @@ const content = [
 
 const AddAction = ({ navigation }) => {
     const [active, setActive] = useState(0);
+    const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
 
-    const renderContent = () => (
-        <View
-            style={{
-                backgroundColor: 'white',
-                padding: 16,
-                height: 450,
-            }}
-        >
-            <Text>Swipe down to close</Text>
-        </View>
-    );
+    console.log(openButtonSheet)
+    // ref
+    const bottomSheetRef = React.useRef(null);
 
-    const sheetRef = React.useRef(null);
+    // variables
+    const snapPoints = React.useMemo(() => ['0%', '25%', '50%'], [bottomSheetRef]);
 
+    // callbacks
+    const handleSheetChanges = React.useCallback((index) => {
+        console.log('handleSheetChanges', index);
+    }, [bottomSheetRef]);
     return (
         <View style={styles.container}>
             <KeyboardAvoidingView
@@ -219,11 +223,17 @@ const AddAction = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <BottomSheet
-                        ref={sheetRef}
-                        snapPoints={[450, 300, 0]}
-                        borderRadius={10}
-                        renderContent={renderContent}
-                    />
+                        ref={bottomSheetRef}
+                        index={openButtonSheet}
+                        snapPoints={snapPoints}
+                        onChange={handleSheetChanges}
+                    >
+                        <View style={styles.contentContainer}>
+                            <Text>Awesome 🎉</Text>
+                        </View>
+                    </BottomSheet>
+
+
                 </View>
             </KeyboardAvoidingView>
         </View>

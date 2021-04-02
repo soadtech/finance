@@ -1,7 +1,7 @@
 import * as commons from '../types/commonsTypes'
 
 const initialState = {
-    openButtonSheet: false
+    openButtonSheet: 0
 }
 
 export default function authReducer (state = initialState, action) {
@@ -9,12 +9,12 @@ export default function authReducer (state = initialState, action) {
         case commons.OPEN_BOTTOM_SHEET:
             return {
                 ...state,
-                openButtonSheet: true
+                openButtonSheet: 2
             };
         case commons.CLOSE_BOTTOM_SHEET:
             return {
                 ...state,
-                openButtonSheet: false
+                openButtonSheet: 0
             };
         default:
             return state;
