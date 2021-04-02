@@ -5,7 +5,7 @@ import { SIZE, WIGHT } from '../../helpers/constants';
 
 const CardStatis = ({ title, background, cant, color, ico, handler }) => {
     return (
-        <TouchableOpacity onPress={handler} style={{ flexDirection: "row", justifyContent: 'space-between', backgroundColor: background, padding: 20, borderRadius: 20, elevation: 3, width: "100%", marginBottom: 10 }}>
+        <TouchableOpacity activeOpacity={0.8} onPress={handler} style={{ flexDirection: "row", justifyContent: 'space-between', backgroundColor: background, padding: 20, borderRadius: 20, elevation: 3, width: "100%", marginBottom: 10 }}>
             <View>
                 <CustomText color={color} size={SIZE.SMALL} weight={WIGHT.SEMI_BOLD}>{title}</CustomText>
                 <CustomText color={color} size={SIZE.MEDIUM} weight={WIGHT.NORMAL}>$ {cant}</CustomText>

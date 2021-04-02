@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, RefreshControl } from 'react-native';
 import Body from '../../commons/Body';
 import CustomText from '../../commons/CustomText';
 import MainWrapper from '../../commons/MainWrapper';
@@ -8,7 +8,17 @@ import Header from '../../components/Header';
 import Hero from '../../components/Hero';
 import { ALIGN, COLORS, SIZE, WIGHT } from '../../helpers/constants';
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const Income = ({ navigation }) => {
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
     return (
         <MainWrapper>
             <Header back handler={() => navigation.goBack()} title="Los que me deben" />
@@ -24,7 +34,12 @@ const Income = ({ navigation }) => {
             </Hero>
 
             <Body>
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView showsVerticalScrollIndicator={false} refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }>
                     <View style={{ flex: 1 }}>
                         <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="40" />
                         <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="90" />
