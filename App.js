@@ -1,19 +1,19 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import RouteStack from './src/routes/RouteStack';
+import { Provider as StoreProvider } from 'react-redux';
+import store from './src/store';
 
-
-const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
 
 export default function AppWrapper () {
 
   return (
     <NavigationContainer>
-      <App />
+      <StoreProvider store={store}>
+        <App />
+      </StoreProvider>
     </NavigationContainer>
   );
 }

@@ -7,7 +7,7 @@ import {
     KeyboardAvoidingView,
     ScrollView,
 } from 'react-native';
-import Avatar from "../../commons/Avatar"
+import BottomSheet from 'reanimated-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Stepper from 'react-native-stepper-ui';
 import HeaderBack from '../../components/HeaderBack';
@@ -148,6 +148,20 @@ const content = [
 const AddAction = ({ navigation }) => {
     const [active, setActive] = useState(0);
 
+    const renderContent = () => (
+        <View
+            style={{
+                backgroundColor: 'white',
+                padding: 16,
+                height: 450,
+            }}
+        >
+            <Text>Swipe down to close</Text>
+        </View>
+    );
+
+    const sheetRef = React.useRef(null);
+
     return (
         <View style={styles.container}>
             <KeyboardAvoidingView
@@ -203,6 +217,13 @@ const AddAction = ({ navigation }) => {
                                 : 'Continuar'}
                         </Text>
                     </TouchableOpacity>
+
+                    <BottomSheet
+                        ref={sheetRef}
+                        snapPoints={[450, 300, 0]}
+                        borderRadius={10}
+                        renderContent={renderContent}
+                    />
                 </View>
             </KeyboardAvoidingView>
         </View>
