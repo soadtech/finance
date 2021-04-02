@@ -3,6 +3,7 @@ import SplashScreen from "../../containers/SplashScreen";
 import Home from "../../containers/Home"
 import Income from "../../containers/Income"
 import Outcome from "../../containers/Outcome"
+import AddAction from "../../containers/AddAction";
 
 export default [
     {
@@ -24,5 +25,9 @@ export default [
     {
         path: "Outcome",
         component: Outcome
+    },
+    {
+        path: "AddAction",
+        component: AddAction
     }
 ]

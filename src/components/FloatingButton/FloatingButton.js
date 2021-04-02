@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Animated, TouchableWithoutFeedback, Image } fro
 import { COLORS } from '../../helpers/constants';
 
 
-const FloatingButton = ({ style }) => {
+const FloatingButton = ({ style, navigation }) => {
     const animation = new Animated.Value(0);
     let open = 0
 
@@ -81,7 +81,7 @@ const FloatingButton = ({ style }) => {
                 </Animated.View>
             </TouchableWithoutFeedback>
 
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate("AddAction")}>
                 <Animated.View style={[styles.button, styles.secondary, incomeStyle]}>
                     <Image resizeMode="contain" style={{ width: 30 }} source={require("../../assets/income.png")} />
                 </Animated.View>

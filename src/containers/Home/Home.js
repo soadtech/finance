@@ -56,7 +56,7 @@ const Home = ({ navigation }) => {
                     </View>
                 </View>
 
-                <FloatingButton style={{ bottom: 80, right: 50 }} />
+                <FloatingButton navigation={navigation} style={{ bottom: 80, right: 50 }} />
             </Body>
         </MainWrapper>
 
