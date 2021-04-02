@@ -11,6 +11,7 @@ import * as Icons from '../../commons/Icons'
 import moment from "moment"
 import CardPeople from '../../components/CardPeople/CardPeople';
 import Hero from '../../components/Hero';
+import Body from '../../commons/Body';
 moment.locale('es');
 
 const Home = ({ navigation }) => {
@@ -38,7 +39,7 @@ const Home = ({ navigation }) => {
                 </View>
             </Hero>
 
-            <View style={styles.body}>
+            <Body>
                 <View style={{ flex: 1 }}>
 
                     <CardStatis handler={handleGoIncomes} ico={<Icons.SvgGraphOne />} color="#fff" title="Prestamos" cant="100,000" background={COLORS.SECONDARY} />
@@ -56,17 +57,12 @@ const Home = ({ navigation }) => {
                 </View>
 
                 <FloatingButton style={{ bottom: 80, right: 50 }} />
-            </View>
+            </Body>
         </MainWrapper>
 
     );
 }
 const styles = StyleSheet.create({
-    body: {
-        flex: 1,
-        backgroundColor: COLORS.BLUE,
-        padding: 20,
-    },
     menu: {
         marginLeft: 15,
         borderBottomWidth: 1

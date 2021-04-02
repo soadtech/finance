@@ -2,9 +2,9 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { COLORS } from '../../helpers/constants';
 
-const Hero = ({ children }) => {
+const Hero = ({ children, style }) => {
     return (
-        <View style={styles.hero}>
+        <View style={[styles.hero, style]}>
             {children}
         </View>
     );
