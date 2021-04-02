@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -6,6 +6,8 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     ScrollView,
+    Platform,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -18,7 +20,8 @@ import CustomButtom from '../../commons/CustomButtom/CustomButtom';
 import CardItemContact from '../../components/CardItemContact';
 import { useDispatch, useSelector } from "react-redux"
 import { closeBottomSheetAction, openBottomSheetAction } from '../../store/actions/commonsActions';
-import StepThree from '../../components/StepThree';
+import FingerprintScanner from 'react-native-fingerprint-scanner';
+//import StepThree from '../../components/StepThree';
 
 
 const HeaderStepBack = ({ handleBack, active, content, tittle }) => {
@@ -87,36 +90,36 @@ const StepTwo = () => {
         </View>
     );
 };
-// const StepThree = () => {
-//     const dispath2 = useDispatch()
-//     const handlerUpButtomSheet = () => {
-//         dispath2(openBottomSheetAction())
-//     }
-//     return (
-//         <View
-//             style={{
-//                 justifyContent: 'space-between',
-//             }}>
-//             <View>
-//                 <Text style={styles.titulo}>Deudor</Text>
-//                 <Text style={styles.descripcion}>Para saber como llamarte.</Text>
-//             </View>
+const StepThree = () => {
+    const dispath2 = useDispatch()
+    const handlerUpButtomSheet = () => {
+        dispath2(openBottomSheetAction())
+    }
+    return (
+        <View
+            style={{
+                justifyContent: 'space-between',
+            }}>
+            <View>
+                <Text style={styles.titulo}>Deudor</Text>
+                <Text style={styles.descripcion}>Para saber como llamarte.</Text>
+            </View>
 
-//             <View style={{ marginTop: 35 }}>
-//                 <CustomInput type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
-//                 <ScrollView>
-//                     <CardItemContact />
-//                     <CardItemContact />
-//                     <View>
-//                         <CustomButtom handler={handlerUpButtomSheet} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
-//                             Crear un nuevo deudor
-//                         </CustomButtom>
-//                     </View>
-//                 </ScrollView>
-//             </View>
-//         </View>
-//     );
-// };
+            <View style={{ marginTop: 35 }}>
+                <CustomInput type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
+                <ScrollView>
+                    <CardItemContact />
+                    <CardItemContact />
+                    <View>
+                        <CustomButtom handler={handlerUpButtomSheet} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
+                            Crear un nuevo deudor
+                        </CustomButtom>
+                    </View>
+                </ScrollView>
+            </View>
+        </View>
+    );
+};
 const StepFour = () => {
     return (
         <View
@@ -155,6 +158,58 @@ const content = [
 const AddAction = ({ navigation }) => {
     const dispath = useDispatch()
     const [active, setActive] = useState(0);
+
+    //LECTOR DE HUELLA
+    let description = null
+    const [errorMessageLegacy, setErrorMessageLegacy] = useState(undefined)
+    const [biometricLegacy, setBiometricLegacy] = useState(undefined)
+
+    useEffect(() => {
+        if (requiresLegacyAuthentication()) {
+            authLegacy();
+        } else {
+            authCurrent();
+        }
+
+        return () => {
+            FingerprintScanner.release();
+        }
+    }, [])
+
+    const requiresLegacyAuthentication = () => {
+        return Platform.Version < 23;
+    }
+
+    const authCurrent = () => {
+        FingerprintScanner
+            .authenticate({ title: 'Log in with Biometrics' })
+            .then((res) => {
+                console.log("todo bieeen", res)
+            }).catch(error => {
+                navigation.goBack()
+            });
+    }
+
+    const authLegacy = () => {
+        FingerprintScanner
+            .authenticate({ onAttempt: handleAuthenticationAttemptedLegacy })
+            .then(() => {
+                handlePopupDismissedLegacy();
+                Alert.alert('Fingerprint Authentication', 'Authenticated successfully');
+            })
+            .catch((error) => {
+                setErrorMessageLegacy(error.message)
+                setBiometricLegacy(error.biometric)
+                description.shake();
+            });
+    }
+
+    const handleAuthenticationAttemptedLegacy = (error) => {
+        setErrorMessageLegacy(error.message)
+        description.shake();
+    };
+
+
     const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
 
     const handlerDownButtomSheet = () => {
