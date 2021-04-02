@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import Body from '../../commons/Body';
 import CustomText from '../../commons/CustomText';
 import MainWrapper from '../../commons/MainWrapper';
+import CardInfoCome from '../../components/CardInfoCome';
 import Header from '../../components/Header';
 import Hero from '../../components/Hero';
-import { ALIGN, SIZE, WIGHT } from '../../helpers/constants';
+import { ALIGN, COLORS, SIZE, WIGHT } from '../../helpers/constants';
 
 const Income = ({ navigation }) => {
     return (
@@ -13,19 +14,29 @@ const Income = ({ navigation }) => {
             <Header back handler={() => navigation.goBack()} title="Los que me deben" />
             <Hero style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <View>
-                    <CustomText size={SIZE.BIG} color="#000" align={ALIGN.CENTER} weight={WIGHT.SEMI_BOLD}>Total</CustomText>
-                    <CustomText size={SIZE.MEDIUM} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>$100,000</CustomText>
+                    <CustomText size={SIZE.BIG} color={COLORS.SECONDARY} align={ALIGN.CENTER} weight={WIGHT.SEMI_BOLD}>Total</CustomText>
+                    <CustomText size={SIZE.MEDIUM} color={COLORS.PRIMARY} align={ALIGN.LEFT} weight={WIGHT.NORMAL}>$100,000</CustomText>
                 </View>
                 <View>
-                    <CustomText size={SIZE.BIG} color="#000" align={ALIGN.LEFT} weight={WIGHT.SEMI_BOLD}>Pagado</CustomText>
-                    <CustomText size={SIZE.MEDIUM} color="#7f7f7f" align={ALIGN.CENTER} weight={WIGHT.NORMAL}>$0</CustomText>
+                    <CustomText size={SIZE.BIG} color={COLORS.SECONDARY} align={ALIGN.LEFT} weight={WIGHT.SEMI_BOLD}>Pagado</CustomText>
+                    <CustomText size={SIZE.MEDIUM} color={COLORS.PRIMARY} align={ALIGN.CENTER} weight={WIGHT.NORMAL}>$0</CustomText>
                 </View>
             </Hero>
 
             <Body>
-                <View>
-                    <CustomText size={SIZE.MEDIUM} color="#7f7f7f" align={ALIGN.CENTER} weight={WIGHT.NORMAL}>No hay nada por aqui</CustomText>
-                </View>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={{ flex: 1 }}>
+                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="40" />
+                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="90" />
+                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="30" />
+                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="40" />
+                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="60" />
+                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="100" />
+                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="10" />
+                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="20" />
+                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="36" />
+                    </View>
+                </ScrollView>
             </Body>
         </MainWrapper>
     );
