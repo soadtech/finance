@@ -10,31 +10,39 @@ import FloatingButton from "../../components/FloatingButton"
 import * as Icons from '../../commons/Icons'
 import moment from "moment"
 import CardPeople from '../../components/CardPeople/CardPeople';
+import Hero from '../../components/Hero';
 moment.locale('es');
 
-const Home = () => {
+const Home = ({ navigation }) => {
     const [today, setToday] = useState(moment().format('LL'))
     // useEffect(() => {
     //     setInterval(() => {
     //         setToday(moment().format('LTS'))
     //     }, 1000)
     // }, [])
+    const handleGoIncomes = () => {
+        navigation.navigate("Income")
+    }
+    const handleGoOutcomes = () => {
+        navigation.navigate("Outcome")
+    }
+
     return (
         <MainWrapper>
             <Header />
-            <View style={styles.hero}>
+            <Hero>
                 <View>
                     <CustomText size={SIZE.MEDIUM} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>Hola, Fernando Ropero</CustomText>
                     <CustomText size={SIZE.BIG} color="#000" align={ALIGN.LEFT} weight={WIGHT.SEMI_BOLD}>Buenas noches</CustomText>
                     <CustomText size={SIZE.SMALL} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>{today}</CustomText>
                 </View>
-            </View>
+            </Hero>
 
             <View style={styles.body}>
                 <View style={{ flex: 1 }}>
 
-                    <CardStatis ico={<Icons.SvgGraphOne />} color="#fff" title="Prestamos" cant="100,000" background={COLORS.SECONDARY} />
-                    <CardStatis ico={<Icons.SvgGraphTwo />} color="#000" title="Deudas" cant="23,600" background={COLORS.WHITE} />
+                    <CardStatis handler={handleGoIncomes} ico={<Icons.SvgGraphOne />} color="#fff" title="Prestamos" cant="100,000" background={COLORS.SECONDARY} />
+                    <CardStatis handler={handleGoOutcomes} ico={<Icons.SvgGraphTwo />} color="#000" title="Deudas" cant="23,600" background={COLORS.WHITE} />
                 </View>
 
                 <View style={{ flex: 1.5 }}>
@@ -58,13 +66,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.BLUE,
         padding: 20,
-    },
-    hero: {
-        flex: 0.2,
-        backgroundColor: COLORS.WHITE_LIGHT,
-        padding: 20,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30
     },
     menu: {
         marginLeft: 15,
