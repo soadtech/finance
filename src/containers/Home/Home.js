@@ -25,7 +25,7 @@ const Home = () => {
             <View style={styles.hero}>
                 <View>
                     <CustomText size={SIZE.MEDIUM} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>Hola, Fernando Ropero</CustomText>
-                    <CustomText size={SIZE.BIG} color="#000" align={ALIGN.LEFT} weight={WIGHT.SEMI_BOLD}>Good Afternoon</CustomText>
+                    <CustomText size={SIZE.BIG} color="#000" align={ALIGN.LEFT} weight={WIGHT.SEMI_BOLD}>Buenas noches</CustomText>
                     <CustomText size={SIZE.SMALL} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>{today}</CustomText>
                 </View>
             </View>
@@ -33,17 +33,16 @@ const Home = () => {
             <View style={styles.body}>
                 <View style={{ flex: 1 }}>
 
-                    <CardStatis ico={<Icons.SvgGraphOne />} color="#fff" title="Income" cant="7,298" background={COLORS.SECONDARY} />
-                    <CardStatis ico={<Icons.SvgGraphTwo />} color="#000" title="Outcome" cant="1,298" background={COLORS.WHITE} />
+                    <CardStatis ico={<Icons.SvgGraphOne />} color="#fff" title="Prestamos" cant="100,000" background={COLORS.SECONDARY} />
+                    <CardStatis ico={<Icons.SvgGraphTwo />} color="#000" title="Deudas" cant="23,600" background={COLORS.WHITE} />
                 </View>
 
                 <View style={{ flex: 1.5 }}>
-                    <CustomText size={SIZE.MEDIUM} color="#000" align={ALIGN.LEFT}>Your recent transactions</CustomText>
+                    <CustomText size={SIZE.MEDIUM} color="#000" align={ALIGN.LEFT}>Transacciones recientes</CustomText>
                     <View>
                         <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginTop: 10, paddingVertical: 15 }}>
-                            <CardPeople name="Fernando Ropero" photo={require("../../assets/avatar.jpg")} cant="18.000" date={moment().format("LLL")} typeCant="+" style={{ marginLeft: 10 }} />
-                            <CardPeople name="Fernando Ropero" photo={require("../../assets/avatar.jpg")} cant="18.000" date={moment().format("LLL")} typeCant="+" style={{ marginLeft: 10 }} />
-                            <CardPeople name="Fernando Ropero" photo={require("../../assets/avatar.jpg")} cant="18.000" date={moment().format("LLL")} typeCant="+" style={{ marginLeft: 10 }} />
+                            <CardPeople name="Ricardo Albord" photo={require("../../assets/avatar.jpg")} cant="100.000" date={moment().format("LLL")} typeCant="+" style={{ marginLeft: 10 }} />
+                            <CardPeople name="Fernando Ropero" photo={require("../../assets/avatar.jpg")} cant="23.600" date={moment().format("LLL")} typeCant="-" style={{ marginLeft: 10 }} />
                         </ScrollView>
                     </View>
                 </View>
