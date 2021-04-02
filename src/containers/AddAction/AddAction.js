@@ -17,7 +17,9 @@ import CustomInput from '../../commons/CustomInput';
 import CustomButtom from '../../commons/CustomButtom/CustomButtom';
 import CardItemContact from '../../components/CardItemContact';
 import { useDispatch, useSelector } from "react-redux"
-import { openBottomSheetAction } from '../../store/actions/commonsActions';
+import { closeBottomSheetAction, openBottomSheetAction } from '../../store/actions/commonsActions';
+import StepThree from '../../components/StepThree';
+
 
 const HeaderStepBack = ({ handleBack, active, content, tittle }) => {
     return (
@@ -85,37 +87,36 @@ const StepTwo = () => {
         </View>
     );
 };
-const StepThree = () => {
-    const dispath = useDispatch()
-    const handlerUpButtomSheet = () => {
-        console.log("hola")
-        dispath(openBottomSheetAction())
-    }
-    return (
-        <View
-            style={{
-                justifyContent: 'space-between',
-            }}>
-            <View>
-                <Text style={styles.titulo}>Deudor</Text>
-                <Text style={styles.descripcion}>Para saber como llamarte.</Text>
-            </View>
+// const StepThree = () => {
+//     const dispath2 = useDispatch()
+//     const handlerUpButtomSheet = () => {
+//         dispath2(openBottomSheetAction())
+//     }
+//     return (
+//         <View
+//             style={{
+//                 justifyContent: 'space-between',
+//             }}>
+//             <View>
+//                 <Text style={styles.titulo}>Deudor</Text>
+//                 <Text style={styles.descripcion}>Para saber como llamarte.</Text>
+//             </View>
 
-            <View style={{ marginTop: 35 }}>
-                <CustomInput type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
-                <ScrollView>
-                    <CardItemContact />
-                    <CardItemContact />
-                    <View>
-                        <CustomButtom handler={handlerUpButtomSheet} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
-                            Crear un nuevo deudor
-                        </CustomButtom>
-                    </View>
-                </ScrollView>
-            </View>
-        </View>
-    );
-};
+//             <View style={{ marginTop: 35 }}>
+//                 <CustomInput type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
+//                 <ScrollView>
+//                     <CardItemContact />
+//                     <CardItemContact />
+//                     <View>
+//                         <CustomButtom handler={handlerUpButtomSheet} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
+//                             Crear un nuevo deudor
+//                         </CustomButtom>
+//                     </View>
+//                 </ScrollView>
+//             </View>
+//         </View>
+//     );
+// };
 const StepFour = () => {
     return (
         <View
@@ -152,15 +153,18 @@ const content = [
 ];
 
 const AddAction = ({ navigation }) => {
+    const dispath = useDispatch()
     const [active, setActive] = useState(0);
     const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
 
-    console.log(openButtonSheet)
+    const handlerDownButtomSheet = () => {
+        dispath(closeBottomSheetAction())
+    }
     // ref
     const bottomSheetRef = React.useRef(null);
 
     // variables
-    const snapPoints = React.useMemo(() => ['0%', '25%', '50%'], [bottomSheetRef]);
+    const snapPoints = React.useMemo(() => ['25%', '100%'], [bottomSheetRef]);
 
     // callbacks
     const handleSheetChanges = React.useCallback((index) => {
@@ -222,20 +226,41 @@ const AddAction = ({ navigation }) => {
                         </Text>
                     </TouchableOpacity>
 
-                    <BottomSheet
-                        ref={bottomSheetRef}
-                        index={openButtonSheet}
-                        snapPoints={snapPoints}
-                        onChange={handleSheetChanges}
-                    >
-                        <View style={styles.contentContainer}>
-                            <Text>Awesome 🎉</Text>
-                        </View>
-                    </BottomSheet>
+
 
 
                 </View>
             </KeyboardAvoidingView>
+            {openButtonSheet && (
+                <BottomSheet
+                    ref={bottomSheetRef}
+                    index={1}
+                    snapPoints={snapPoints}
+                    onChange={handleSheetChanges}
+                    style={{ backgroundColor: COLORS.BLUE, flex: 1 }}
+                    topInset={30}
+                >
+                    <View style={{ backgroundColor: COLORS.BLUE, flex: 1, paddingHorizontal: 20 }}>
+                        <CustomText color={COLORS.PRIMARY} size={SIZE.BIG} align={ALIGN.CENTER}>Creando contacto</CustomText>
+
+                        <CustomInput label="Nombre" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
+                        <CustomInput label="Numero de telefono" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="3002111252" />
+                        <CustomInput label="Email" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="nose@correo.com" />
+                        <CustomInput label="Clave de seguridad" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="1234" />
+
+                        <View>
+                            <CustomButtom style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
+                                Crear un nuevo deudor
+                            </CustomButtom>
+                        </View>
+                        <View>
+                            <TouchableOpacity onPress={handlerDownButtomSheet} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
+                                <Text style={{ textAlign: "center" }}>Cancelar</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </BottomSheet>
+            )}
         </View>
     );
 };
