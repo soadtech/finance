@@ -159,57 +159,6 @@ const AddAction = ({ navigation }) => {
     const dispath = useDispatch()
     const [active, setActive] = useState(0);
 
-    //LECTOR DE HUELLA
-    let description = null
-    const [errorMessageLegacy, setErrorMessageLegacy] = useState(undefined)
-    const [biometricLegacy, setBiometricLegacy] = useState(undefined)
-
-    useEffect(() => {
-        if (requiresLegacyAuthentication()) {
-            authLegacy();
-        } else {
-            authCurrent();
-        }
-
-        return () => {
-            FingerprintScanner.release();
-        }
-    }, [])
-
-    const requiresLegacyAuthentication = () => {
-        return Platform.Version < 23;
-    }
-
-    const authCurrent = () => {
-        FingerprintScanner
-            .authenticate({ title: 'Log in with Biometrics' })
-            .then((res) => {
-                console.log("todo bieeen", res)
-            }).catch(error => {
-                navigation.goBack()
-            });
-    }
-
-    const authLegacy = () => {
-        FingerprintScanner
-            .authenticate({ onAttempt: handleAuthenticationAttemptedLegacy })
-            .then(() => {
-                handlePopupDismissedLegacy();
-                Alert.alert('Fingerprint Authentication', 'Authenticated successfully');
-            })
-            .catch((error) => {
-                setErrorMessageLegacy(error.message)
-                setBiometricLegacy(error.biometric)
-                description.shake();
-            });
-    }
-
-    const handleAuthenticationAttemptedLegacy = (error) => {
-        setErrorMessageLegacy(error.message)
-        description.shake();
-    };
-
-
     const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
 
     const handlerDownButtomSheet = () => {
