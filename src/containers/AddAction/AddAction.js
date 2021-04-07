@@ -19,7 +19,7 @@ import CustomInput from '../../commons/CustomInput';
 import CustomButtom from '../../commons/CustomButtom/CustomButtom';
 import CardItemContact from '../../components/CardItemContact';
 import { useDispatch, useSelector } from "react-redux"
-import { closeBottomSheetAction, openBottomSheetAction } from '../../store/actions/commonsActions';
+//import { closeBottomSheetAction, openBottomSheetAction } from '../../store/actions/commonsActions';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 //import StepThree from '../../components/StepThree';
 
@@ -159,11 +159,11 @@ const AddAction = ({ navigation }) => {
     const dispath = useDispatch()
     const [active, setActive] = useState(0);
 
-    const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
+    //const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
 
-    const handlerDownButtomSheet = () => {
-        dispath(closeBottomSheetAction())
-    }
+    // const handlerDownButtomSheet = () => {
+    //     dispath(closeBottomSheetAction())
+    // }
     // ref
     const bottomSheetRef = React.useRef(null);
 
@@ -235,7 +235,7 @@ const AddAction = ({ navigation }) => {
 
                 </View>
             </KeyboardAvoidingView>
-            {openButtonSheet && (
+            {/* {openButtonSheet && (
                 <BottomSheet
                     ref={bottomSheetRef}
                     index={1}
@@ -264,7 +264,7 @@ const AddAction = ({ navigation }) => {
                         </View>
                     </View>
                 </BottomSheet>
-            )}
+            )} */}
         </View>
     );
 };

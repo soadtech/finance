@@ -7,16 +7,21 @@ import MainWrapper from '../../commons/MainWrapper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { ALIGN, SIZE, WIGHT } from '../../helpers/constants';
 import { sendPostRequest } from '../../utils/service';
+import { loginAction } from '../../store/actions/userAction';
+import { useDispatch } from "react-redux"
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const dispatch = useDispatch()
     const handleLogin = async () => {
 
         try {
-            const result = await sendPostRequest("/auth/login", { email, password })
-            console.log("aaa", result);
-            return navigation.navigate("Home")
+            dispatch(loginAction({ correo: "hola" }))
+
+            // const result = await sendPostRequest("/auth/login", { email, password })
+            // console.log("aaa", result);
+            // return navigation.navigate("Home")
         } catch (error) {
             Alert.alert(error)
         }
