@@ -1,15 +1,26 @@
-import React from 'react'
-import { Text, View, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react'
+import { Text, View, StyleSheet, Alert } from 'react-native';
 import CustomButtom from '../../commons/CustomButtom/CustomButtom';
 import CustomInput from '../../commons/CustomInput';
 import CustomText from '../../commons/CustomText';
 import MainWrapper from '../../commons/MainWrapper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { ALIGN, SIZE, WIGHT } from '../../helpers/constants';
+import { sendPostRequest } from '../../utils/service';
 
 const Login = ({ navigation }) => {
-    const handleLogin = () => {
-        navigation.navigate("Home")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const handleLogin = async () => {
+
+        try {
+            const result = await sendPostRequest("/auth/login", { email, password })
+            console.log("aaa", result);
+            return navigation.navigate("Home")
+        } catch (error) {
+            Alert.alert(error)
+        }
+
     }
     return (
         <MainWrapper login>
@@ -21,8 +32,8 @@ const Login = ({ navigation }) => {
                         <CustomText>back!</CustomText>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <CustomInput label="E-mail" placeholder="Email" />
-                        <CustomInput label="Password" placeholder="Password" />
+                        <CustomInput value={email} action={setEmail} label="E-mail" placeholder="Email" />
+                        <CustomInput value={password} action={setPassword} label="Password" placeholder="Password" />
                         <CustomText color="gray" size={SIZE.SMALL} align={ALIGN.RIGHT} weight={WIGHT.NORMAL}>Forgot password?</CustomText>
                     </View>
                     <View style={{ flex: 1, marginTop: 30 }}>
