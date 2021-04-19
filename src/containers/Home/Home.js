@@ -1,65 +1,70 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import Avatar from '../../commons/Avatar/Avatar';
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import CustomText from '../../commons/CustomText';
 import MainWrapper from '../../commons/MainWrapper';
-import CardStatis from '../../components/CardStatis/CardStatis';
 import Header from '../../components/Header';
-import * as Icons from '../../commons/Icons'
 import { ALIGN, COLORS, SIZE, WIGHT } from '../../helpers/constants';
+import CardStatis from '../../components/CardStatis/CardStatis';
+import FloatingButton from "../../components/FloatingButton"
+import * as Icons from '../../commons/Icons'
+import moment from "moment"
+import CardPeople from '../../components/CardPeople/CardPeople';
+import Hero from '../../components/Hero';
+import Body from '../../commons/Body';
+import { useSelector } from "react-redux"
 
-const Home = () => {
+moment.locale('es');
+
+const Home = ({ navigation }) => {
+    const [today, setToday] = useState(moment().format('LL'))
+    const dataUser = useSelector(state => state.authReducer.data)
+
+    const handleGoIncomes = () => {
+        navigation.navigate("Income")
+    }
+    const handleGoOutcomes = () => {
+        navigation.navigate("Outcome")
+    }
+
     return (
         <MainWrapper>
             <Header />
-            <View style={{ flex: 0.2 }}>
-                <Text style={{ textAlign: "center", fontSize: SIZE.MEDIUM, color: "#D3C9C7", fontWeight: WIGHT.NORMAL }}>Total balance</Text>
-                <Text style={{ textAlign: "center", color: "white", fontSize: SIZE.BIG, fontWeight: WIGHT.SEMI_BOLD }}>$12,698</Text>
-            </View>
-
-            <View style={styles.body}>
-                <View style={{ flex: 0.3, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <CustomText color="#000" align={ALIGN.LEFT}>Statistics</CustomText>
-                    <CustomText size={SIZE.SMALL} color={COLORS.SECONDARY} align={ALIGN.LEFT}>See all</CustomText>
+            <Hero>
+                <View>
+                    <CustomText size={SIZE.MEDIUM} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>Hola, {dataUser.user.name}</CustomText>
+                    <CustomText size={SIZE.BIG} color="#000" align={ALIGN.LEFT} weight={WIGHT.SEMI_BOLD}>Buenas noches</CustomText>
+                    <CustomText size={SIZE.SMALL} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>{today}</CustomText>
                 </View>
-                <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
-                    <CardStatis ico={<Icons.SvgGraphOne />} color="#fff" title="Income" cant="7,298" background={COLORS.SECONDARY} />
-                    <CardStatis ico={<Icons.SvgGraphTwo />} color="#000" title="Outcome" cant="1,298" background={COLORS.WHITE} />
+            </Hero>
+
+            <Body>
+                <View style={{ flex: 1 }}>
+
+                    <CardStatis handler={handleGoIncomes} ico={<Icons.SvgGraphOne />} color="#fff" title="Prestamos" cant="100,000" background={COLORS.SECONDARY} />
+                    <CardStatis handler={handleGoOutcomes} ico={<Icons.SvgGraphTwo />} color="#000" title="Deudas" cant="23,600" background={COLORS.WHITE} />
                 </View>
-                <View style={{ flex: 1, justifyContent: 'space-between' }}>
-                    <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
-                        <CustomText size={SIZE.MEDIUM} color="#000" align={ALIGN.LEFT}>Your transactions</CustomText>
-                        <CustomText size={SIZE.SMALL} color={COLORS.SECONDARY} align={ALIGN.LEFT}>See all</CustomText>
-                    </View>
 
-                    <View style={{ flexDirection: "row" }}>
-                        <View style={{ backgroundColor: "white", padding: 20, borderRadius: 15, elevation: 3 }}>
-                            <View style={{ alignSelf: 'center' }}>
-                                <Avatar src={require('../../assets/avatar.jpg')} />
-                                <CustomText color="#000" size={SIZE.SMALL}>Oscar Wilson</CustomText>
-                            </View>
-                            <View style={{ height: 30 }}>
-
-                            </View>
-                            <View>
-                                <CustomText align={ALIGN.LEFT} color="#000" size={SIZE.MEDIUM} weight={WIGHT.SEMI_BOLD}>+$2,321</CustomText>
-                                <CustomText color="#cecece" size={SIZE.SMALL} weight={WIGHT.NORMAL}>20 Mar, 6:21 AM</CustomText>
-                            </View>
-                        </View>
+                <View style={{ flex: 1.5 }}>
+                    <CustomText size={SIZE.MEDIUM} color="#000" align={ALIGN.LEFT}>Transacciones recientes</CustomText>
+                    <View>
+                        <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginTop: 10, paddingVertical: 15 }}>
+                            <CardPeople name="Ricardo Albord" photo={require("../../assets/avatar.jpg")} cant="100.000" date={moment().format("LLL")} typeCant="+" style={{ marginLeft: 10 }} />
+                            <CardPeople name="Fernando Ropero" photo={require("../../assets/avatar.jpg")} cant="23.600" date={moment().format("LLL")} typeCant="-" style={{ marginLeft: 10 }} />
+                        </ScrollView>
                     </View>
                 </View>
-            </View>
+
+                <FloatingButton navigation={navigation} style={{ bottom: 80, right: 50 }} />
+            </Body>
         </MainWrapper>
+
     );
 }
 const styles = StyleSheet.create({
-    body: {
-        flex: 1,
-        backgroundColor: "white",
-        borderTopRightRadius: 35,
-        borderTopLeftRadius: 35,
-        padding: 30,
-        justifyContent: 'space-between'
+    menu: {
+        marginLeft: 15,
+        borderBottomWidth: 1
     }
 })
+
 export default Home;
