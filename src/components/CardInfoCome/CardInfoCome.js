@@ -8,7 +8,7 @@ const CardInfoCome = ({ image, namePeople, prestamo, total, titlePrestamo, porce
     return (
         <View style={{ backgroundColor: COLORS.WHITE_LIGHT, padding: 10, borderRadius: 10, marginBottom: 10 }}>
             <View style={{ flexDirection: "row" }}>
-                <Avatar src={image} />
+                <Avatar uri src={image} />
                 <View style={{ flex: 1 }}>
                     <CustomText size={SIZE.MEDIUM} color={COLORS.PRIMARY} align={ALIGN.CENTER} weight={WIGHT.SEMI_BOLD}>{namePeople}</CustomText>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

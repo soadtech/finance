@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, ScrollView, RefreshControl } from 'react-native';
 import Body from '../../commons/Body';
 import CustomText from '../../commons/CustomText';
@@ -7,6 +7,8 @@ import CardInfoCome from '../../components/CardInfoCome';
 import Header from '../../components/Header';
 import Hero from '../../components/Hero';
 import { ALIGN, COLORS, SIZE, WIGHT } from '../../helpers/constants';
+import { useSelector } from "react-redux"
+import { sendRequest } from '../../services';
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -14,11 +16,27 @@ const wait = (timeout) => {
 
 const Income = ({ navigation }) => {
     const [refreshing, setRefreshing] = React.useState(false);
+    const [incomes, setIncomes] = React.useState([]);
+    const numberUser = useSelector(state => state.authReducer.data.user.phone)
+
+    const getIncomes = async () => {
+        const result = await sendRequest(`/admin/transaction?creatorPhone=${numberUser}&type=1`, {})
+        if (!result.success) {
+            Alert.alert(result.message)
+            return
+        }
+        setIncomes(result.data.transactions)
+    }
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        wait(2000).then(() => setRefreshing(false));
+        getIncomes().then(() => setRefreshing(false));
     }, []);
+
+    useEffect(() => {
+
+        getIncomes()
+    }, [])
     return (
         <MainWrapper>
             <Header back handler={() => navigation.goBack()} title="Los que me deben" />
@@ -41,15 +59,10 @@ const Income = ({ navigation }) => {
                     />
                 }>
                     <View style={{ flex: 1 }}>
-                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="40" />
-                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="90" />
-                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="30" />
-                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="40" />
-                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="60" />
-                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="100" />
-                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="10" />
-                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="20" />
-                        <CardInfoCome image={require("../../assets/avatar.jpg")} namePeople="Ricardo Albor" prestamo="10,000" total="0,00" titlePrestamo="Recibos" porcentaje="36" />
+                        {incomes.map(income => (
+                            <CardInfoCome key={income.transaction.id} image={income.contact.image} namePeople={income.contact.name} prestamo={income.transaction.operationAmount} total={income.transaction.totalPaid} titlePrestamo={income.transaction.title} porcentaje="0" />
+                        ))}
+
                     </View>
                 </ScrollView>
             </Body>
