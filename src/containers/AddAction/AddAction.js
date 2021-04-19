@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -91,15 +91,31 @@ const StepTwo = ({ operationAmount, setOperationAmount }) => {
         </View>
     );
 };
-const StepThree = ({ debtorNumber, setDebtorNumber, getContact, contacts }) => {
+const StepThree = ({ debtorNumber, setDebtorNumber, contacts, setContacts, setSelectedContact }) => {
     const dispath2 = useDispatch()
     const handlerUpButtomSheet = () => {
         dispath2(openBottomSheetAction())
     }
-    useEffect(() => {
-        getContact()
-    }, [])
-    console.log(contacts);
+
+    const handleSelectContact = useCallback(
+        (action, i, d) => {
+            // console.log('undiendo el =>', action, ' del ->', pregunta.id)
+            const respuesta = d.map((pregunta, index) => {
+                if (i !== index) return { ...pregunta, selected: 0 };
+                setSelectedContact({
+                    ...pregunta,
+                    selected: action
+                })
+                return {
+                    ...pregunta,
+                    selected: action
+                };
+            });
+            setContacts(respuesta)
+        },
+        [contacts],
+    )
+
     return (
         <View
             style={{
@@ -114,7 +130,7 @@ const StepThree = ({ debtorNumber, setDebtorNumber, getContact, contacts }) => {
                 <CustomInput value={debtorNumber} action={setDebtorNumber} type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
                 <ScrollView>
                     {contacts.map((contact, key) => (
-                        <CardItemContact key={key} image={contact.image} name={contact.name} />
+                        <CardItemContact handleSelectContact={() => handleSelectContact(1, key, contacts)} selected={contact.selected} key={key} image={contact.image} name={contact.name} />
                     ))}
                     <View>
                         <CustomButtom handler={handlerUpButtomSheet} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
@@ -126,7 +142,7 @@ const StepThree = ({ debtorNumber, setDebtorNumber, getContact, contacts }) => {
         </View>
     );
 };
-const StepFour = ({ title, operationAmount, debtorNumber }) => {
+const StepFour = ({ title, operationAmount, debtorNumber, selectedContact }) => {
     return (
         <View
             style={{
@@ -141,8 +157,9 @@ const StepFour = ({ title, operationAmount, debtorNumber }) => {
                 <ScrollView>
                     <View>
                         <CustomText color={COLORS.PRIMARY}>{title}</CustomText>
-                        <CustomText>{operationAmount}</CustomText>
-                        <CustomText>{debtorNumber}</CustomText>
+                        <CustomText color={COLORS.PRIMARY}>{operationAmount}</CustomText>
+                        <CustomText color={COLORS.PRIMARY}>{selectedContact.number}</CustomText>
+                        <CustomText color={COLORS.PRIMARY}>{selectedContact.name}</CustomText>
                     </View>
                 </ScrollView>
             </View>
@@ -163,6 +180,7 @@ const AddAction = ({ navigation }) => {
     const [email, setEmail] = useState("")
     const [pass, setPass] = useState("")
     const [contacts, setContacts] = useState([])
+    const [selectedContact, setSelectedContact] = useState({})
 
     const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
     const numberUser = useSelector(state => state.authReducer.data.user.phone)
@@ -193,11 +211,9 @@ const AddAction = ({ navigation }) => {
     const content = [
         <StepOne title="Component 1" title={title} setTitle={setTitle} />,
         <StepTwo title="Component 3" operationAmount={operationAmount} setOperationAmount={setOperationAmount} />,
-        <StepThree title="Component 4" contacts={contacts} getContact={getContact} debtorNumber={debtorNumber} setDebtorNumber={setDebtorNumber} />,
-        <StepFour title="Component 5" title={title} operationAmount={operationAmount} debtorNumber={debtorNumber} />,
+        <StepThree title="Component 4" setSelectedContact={setSelectedContact} setContacts={setContacts} contacts={contacts} getContact={getContact} debtorNumber={debtorNumber} setDebtorNumber={setDebtorNumber} />,
+        <StepFour title="Component 5" selectedContact={selectedContact} title={title} operationAmount={operationAmount} debtorNumber={debtorNumber} />,
     ];
-
-
 
     const handleCreateContact = async () => {
         const err = validateEmpty({ name, number, email, pass })
@@ -216,6 +232,27 @@ const AddAction = ({ navigation }) => {
             handlerDownButtomSheet()
             getContact()
             console.log(result)
+        } catch (error) {
+            Alert.alert(error.message)
+        }
+    }
+
+    const makeTransaction = async () => {
+        const err = validateEmpty({ title, operationAmount, debtorNumber: selectedContact.number })
+        if (Object.keys(err).length > 0) {
+            setErrors(err)
+            Alert.alert("Todos los campos son obligatorios")
+            return
+        }
+
+        try {
+            const result = await sendPostRequest("/admin/transaction", { title, operationAmount, debtorNumber: selectedContact.number, type: 1, totalPaid: 0, paymentHistory: [], creatorPhone: numberUser }, {})
+            if (!result.success) {
+                Alert.alert(result.message)
+                return
+            }
+            console.log(result)
+            navigation.navigate("Home")
         } catch (error) {
             Alert.alert(error.message)
         }
@@ -263,7 +300,7 @@ const AddAction = ({ navigation }) => {
                         />
                     </View>
                     <TouchableOpacity
-                        onPress={() => setActive(active + 1)}
+                        onPress={() => active === content.length - 1 ? makeTransaction() : setActive(active + 1)}
                         style={{
                             borderRadius: 10,
                             backgroundColor: COLORS.PRIMARY,
