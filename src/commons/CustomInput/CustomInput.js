@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         borderBottomColor: "white",
         paddingVertical: 10,
         fontSize: 20,
-        color: COLORS.WHITE
+        color: COLORS.PRIMARY
     }
 })
 export default CustomInput;

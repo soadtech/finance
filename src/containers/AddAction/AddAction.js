@@ -56,7 +56,7 @@ const Step1 = (props) => {
         </View>
     );
 };
-const StepOne = () => {
+const StepOne = ({ title, setTitle }) => {
     return (
         <View
             style={{
@@ -68,12 +68,12 @@ const StepOne = () => {
             </View>
 
             <View style={{ marginTop: 35 }}>
-                <CustomInput style={{ borderBottomColor: "#000" }} placeholder="Para comprar una hamburguesa" />
+                <CustomInput value={title} action={setTitle} style={{ borderBottomColor: "#000" }} placeholder="Para comprar una hamburguesa" />
             </View>
         </View>
     );
 };
-const StepTwo = () => {
+const StepTwo = ({ operationAmount, setOperationAmount }) => {
     return (
         <View
             style={{
@@ -85,12 +85,12 @@ const StepTwo = () => {
             </View>
 
             <View style={{ marginTop: 35 }}>
-                <CustomInput type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="$12,000" />
+                <CustomInput value={operationAmount} action={setOperationAmount} type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="$12,000" />
             </View>
         </View>
     );
 };
-const StepThree = () => {
+const StepThree = ({ debtorNumber, setDebtorNumber }) => {
     const dispath2 = useDispatch()
     const handlerUpButtomSheet = () => {
         dispath2(openBottomSheetAction())
@@ -106,7 +106,7 @@ const StepThree = () => {
             </View>
 
             <View style={{ marginTop: 35 }}>
-                <CustomInput type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
+                <CustomInput value={debtorNumber} action={setDebtorNumber} type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
                 <ScrollView>
                     <CardItemContact />
                     <CardItemContact />
@@ -120,7 +120,7 @@ const StepThree = () => {
         </View>
     );
 };
-const StepFour = () => {
+const StepFour = ({ title, operationAmount, debtorNumber }) => {
     return (
         <View
             style={{
@@ -132,14 +132,11 @@ const StepFour = () => {
             </View>
 
             <View style={{ marginTop: 35 }}>
-                <CustomInput type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
                 <ScrollView>
-                    <CardItemContact />
-                    <CardItemContact />
                     <View>
-                        <CustomButtom style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
-                            Crear un nuevo deudor
-                        </CustomButtom>
+                        <CustomText color={COLORS.PRIMARY}>{title}</CustomText>
+                        <CustomText>{operationAmount}</CustomText>
+                        <CustomText>{debtorNumber}</CustomText>
                     </View>
                 </ScrollView>
             </View>
@@ -147,17 +144,12 @@ const StepFour = () => {
     );
 };
 
-
-const content = [
-    <StepOne title="Component 1" />,
-    <StepTwo title="Component 3" />,
-    <StepThree title="Component 4" />,
-    <StepFour title="Component 5" />,
-];
-
 const AddAction = ({ navigation }) => {
     const dispath = useDispatch()
     const [active, setActive] = useState(0);
+    const [title, setTitle] = useState("")
+    const [operationAmount, setOperationAmount] = useState("")
+    const [debtorNumber, setDebtorNumber] = useState("")
 
     const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
 
@@ -174,6 +166,16 @@ const AddAction = ({ navigation }) => {
     const handleSheetChanges = React.useCallback((index) => {
         console.log('handleSheetChanges', index);
     }, [bottomSheetRef]);
+
+
+    const content = [
+        <StepOne title="Component 1" title={title} setTitle={setTitle} />,
+        <StepTwo title="Component 3" operationAmount={operationAmount} setOperationAmount={setOperationAmount} />,
+        <StepThree title="Component 4" debtorNumber={debtorNumber} setDebtorNumber={setDebtorNumber} />,
+        <StepFour title="Component 5" title={title} operationAmount={operationAmount} debtorNumber={debtorNumber} />,
+    ];
+
+
     return (
         <View style={styles.container}>
             <KeyboardAvoidingView
