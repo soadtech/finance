@@ -21,6 +21,7 @@ import CardItemContact from '../../components/CardItemContact';
 import { useDispatch, useSelector } from "react-redux"
 import { closeBottomSheetAction, openBottomSheetAction } from '../../store/actions/commonsActions';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
+import { sendRequest } from '../../services';
 //import StepThree from '../../components/StepThree';
 
 
@@ -90,11 +91,23 @@ const StepTwo = ({ operationAmount, setOperationAmount }) => {
         </View>
     );
 };
-const StepThree = ({ debtorNumber, setDebtorNumber }) => {
+const StepThree = ({ debtorNumber, setDebtorNumber, numberUser }) => {
     const dispath2 = useDispatch()
+    const [contacts, setContacts] = useState([])
     const handlerUpButtomSheet = () => {
         dispath2(openBottomSheetAction())
     }
+    useEffect(() => {
+        const getContact = async () => {
+            const result = await sendRequest(`/admin/contacts/${numberUser}`, {})
+            if (!result.success) {
+                Alert.alert(result.message)
+                return
+            }
+            setContacts(result.data.contacts)
+        }
+        getContact()
+    }, [])
     return (
         <View
             style={{
@@ -108,8 +121,9 @@ const StepThree = ({ debtorNumber, setDebtorNumber }) => {
             <View style={{ marginTop: 35 }}>
                 <CustomInput value={debtorNumber} action={setDebtorNumber} type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
                 <ScrollView>
-                    <CardItemContact />
-                    <CardItemContact />
+                    {contacts.map(contact => (
+                        <CardItemContact />
+                    ))}
                     <View>
                         <CustomButtom handler={handlerUpButtomSheet} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
                             Crear un nuevo deudor
@@ -152,6 +166,7 @@ const AddAction = ({ navigation }) => {
     const [debtorNumber, setDebtorNumber] = useState("")
 
     const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
+    const numberUser = useSelector(state => state.authReducer.data.user.phone)
 
     const handlerDownButtomSheet = () => {
         dispath(closeBottomSheetAction())
@@ -171,7 +186,7 @@ const AddAction = ({ navigation }) => {
     const content = [
         <StepOne title="Component 1" title={title} setTitle={setTitle} />,
         <StepTwo title="Component 3" operationAmount={operationAmount} setOperationAmount={setOperationAmount} />,
-        <StepThree title="Component 4" debtorNumber={debtorNumber} setDebtorNumber={setDebtorNumber} />,
+        <StepThree title="Component 4" numberUser={numberUser} debtorNumber={debtorNumber} setDebtorNumber={setDebtorNumber} />,
         <StepFour title="Component 5" title={title} operationAmount={operationAmount} debtorNumber={debtorNumber} />,
     ];
 

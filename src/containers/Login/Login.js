@@ -10,6 +10,7 @@ import { validateEmpty } from '../../helpers';
 import { sendPostRequest } from '../../services';
 import { useDispatch } from "react-redux"
 import { loginAction } from '../../store/actions/userAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
     const dispatch = useDispatch()
@@ -30,6 +31,12 @@ const Login = ({ navigation }) => {
             if (!result.success) {
                 Alert.alert(result.message)
                 return
+            }
+            try {
+                await AsyncStorage.removeItem('@token')
+                await AsyncStorage.setItem('@token', JSON.stringify(result.data))
+            } catch (e) {
+                // saving error
             }
             dispatch(loginAction(result.data))
             navigation.navigate("Home")

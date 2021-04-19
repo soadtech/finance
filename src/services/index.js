@@ -1,13 +1,12 @@
 import { APP_API_URL } from "../config"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function sendRequest (path, options) {
     const headers = options.headers || new Headers()
     headers.append('content-type', 'application/json')
     let url = `${APP_API_URL}${path}`
 
-    if (options.token) {
-        headers.append('Authorization', `Bearer ${options.token}`)
-    }
+    const token = await getToken()
     console.log("url ->", url)
     try {
         const response = await fetch(url, {
@@ -15,7 +14,7 @@ export async function sendRequest (path, options) {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                'authorization': `Bearer ${options.token}`
+                'authorization': `Bearer ${token.token}`
             }
         })
         if (response.ok) {
@@ -32,11 +31,11 @@ export async function sendPostRequest (path, data, options) {
     const headers = options.headers || new Headers()
     headers.append('content-type', 'application/json')
 
-    let url = `${APP_API_URL}${path}`
+    let url = `${APP_API_URL}${path}`;
 
-    if (options.token) {
-        headers.append('Authorization', `Bearer ${options.token}`)
-    }
+    // if (token) {
+    //     headers.append('Authorization', `Bearer ${token}`)
+    // }
     console.log("url ->", url)
     try {
         const response = await fetch(url, {
@@ -60,4 +59,27 @@ export async function sendPostRequest (path, data, options) {
 
 }
 
+const getToken = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem('@token')
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+        // error reading value
+    }
+}
 
+const storeData = async (value) => {
+    try {
+        const jsonValue = JSON.stringify(value)
+        await AsyncStorage.setItem('@storage_Key', jsonValue)
+    } catch (e) {
+        // saving error
+    }
+}
+export const saveToken = async (value) => {
+    try {
+        await AsyncStorage.setItem('@token', value)
+    } catch (e) {
+        // saving error
+    }
+}
