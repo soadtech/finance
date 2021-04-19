@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 
-const Avatar = ({ src }) => {
+const Avatar = ({ src, uri }) => {
     return (
         <View style={styles.avatar}>
-            <Image style={styles.imageAvatar} resizeMode="contain" source={src} />
+            <Image style={styles.imageAvatar} resizeMode="contain" source={uri ? { uri: src } : src} />
         </View>
     );
 }

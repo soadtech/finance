@@ -20,8 +20,8 @@ import CustomButtom from '../../commons/CustomButtom/CustomButtom';
 import CardItemContact from '../../components/CardItemContact';
 import { useDispatch, useSelector } from "react-redux"
 import { closeBottomSheetAction, openBottomSheetAction } from '../../store/actions/commonsActions';
-import FingerprintScanner from 'react-native-fingerprint-scanner';
-import { sendRequest } from '../../services';
+import { validateEmpty } from "../../helpers/index"
+import { sendRequest, sendPostRequest } from '../../services';
 //import StepThree from '../../components/StepThree';
 
 
@@ -91,23 +91,15 @@ const StepTwo = ({ operationAmount, setOperationAmount }) => {
         </View>
     );
 };
-const StepThree = ({ debtorNumber, setDebtorNumber, numberUser }) => {
+const StepThree = ({ debtorNumber, setDebtorNumber, getContact, contacts }) => {
     const dispath2 = useDispatch()
-    const [contacts, setContacts] = useState([])
     const handlerUpButtomSheet = () => {
         dispath2(openBottomSheetAction())
     }
     useEffect(() => {
-        const getContact = async () => {
-            const result = await sendRequest(`/admin/contacts/${numberUser}`, {})
-            if (!result.success) {
-                Alert.alert(result.message)
-                return
-            }
-            setContacts(result.data.contacts)
-        }
         getContact()
     }, [])
+    console.log(contacts);
     return (
         <View
             style={{
@@ -121,8 +113,8 @@ const StepThree = ({ debtorNumber, setDebtorNumber, numberUser }) => {
             <View style={{ marginTop: 35 }}>
                 <CustomInput value={debtorNumber} action={setDebtorNumber} type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
                 <ScrollView>
-                    {contacts.map(contact => (
-                        <CardItemContact />
+                    {contacts.map((contact, key) => (
+                        <CardItemContact key={key} image={contact.image} name={contact.name} />
                     ))}
                     <View>
                         <CustomButtom handler={handlerUpButtomSheet} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
@@ -165,6 +157,13 @@ const AddAction = ({ navigation }) => {
     const [operationAmount, setOperationAmount] = useState("")
     const [debtorNumber, setDebtorNumber] = useState("")
 
+    //** STATE TO CONTACT */
+    const [name, setName] = useState("")
+    const [number, setNumber] = useState("")
+    const [email, setEmail] = useState("")
+    const [pass, setPass] = useState("")
+    const [contacts, setContacts] = useState([])
+
     const openButtonSheet = useSelector(state => state.commonsReducers.openButtonSheet)
     const numberUser = useSelector(state => state.authReducer.data.user.phone)
 
@@ -182,14 +181,45 @@ const AddAction = ({ navigation }) => {
         console.log('handleSheetChanges', index);
     }, [bottomSheetRef]);
 
+    const getContact = async () => {
+        const result = await sendRequest(`/admin/contacts/${numberUser}`, {})
+        if (!result.success) {
+            Alert.alert(result.message)
+            return
+        }
+        setContacts(result.data.contacts)
+    }
 
     const content = [
         <StepOne title="Component 1" title={title} setTitle={setTitle} />,
         <StepTwo title="Component 3" operationAmount={operationAmount} setOperationAmount={setOperationAmount} />,
-        <StepThree title="Component 4" numberUser={numberUser} debtorNumber={debtorNumber} setDebtorNumber={setDebtorNumber} />,
+        <StepThree title="Component 4" contacts={contacts} getContact={getContact} debtorNumber={debtorNumber} setDebtorNumber={setDebtorNumber} />,
         <StepFour title="Component 5" title={title} operationAmount={operationAmount} debtorNumber={debtorNumber} />,
     ];
 
+
+
+    const handleCreateContact = async () => {
+        const err = validateEmpty({ name, number, email, pass })
+        if (Object.keys(err).length > 0) {
+            setErrors(err)
+            Alert.alert("Todos los campos son obligatorios")
+            return
+        }
+
+        try {
+            const result = await sendPostRequest("/admin/contacts", { name, number, email, pass, creatorPhone: numberUser }, {})
+            if (!result.success) {
+                Alert.alert(result.message)
+                return
+            }
+            handlerDownButtomSheet()
+            getContact()
+            console.log(result)
+        } catch (error) {
+            Alert.alert(error.message)
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -264,13 +294,13 @@ const AddAction = ({ navigation }) => {
                     <View style={{ backgroundColor: COLORS.BLUE, flex: 1, paddingHorizontal: 20 }}>
                         <CustomText color={COLORS.PRIMARY} size={SIZE.BIG} align={ALIGN.CENTER}>Creando contacto</CustomText>
 
-                        <CustomInput label="Nombre" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
-                        <CustomInput label="Numero de telefono" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="3002111252" />
-                        <CustomInput label="Email" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="nose@correo.com" />
-                        <CustomInput label="Clave de seguridad" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="1234" />
+                        <CustomInput value={name} action={setName} label="Nombre" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="Fernando Ropero" />
+                        <CustomInput value={number} action={setNumber} label="Numero de telefono" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="3002111252" />
+                        <CustomInput value={email} action={setEmail} label="Email" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="nose@correo.com" />
+                        <CustomInput value={pass} action={setPass} label="Clave de seguridad" type="number-pad" style={{ borderBottomColor: "#000" }} placeholder="1234" />
 
                         <View>
-                            <CustomButtom style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
+                            <CustomButtom handler={handleCreateContact} style={{ paddingVertical: 10, width: "90%", alignSelf: "center", marginTop: 10, paddingHorizontal: 20 }}>
                                 Crear un nuevo deudor
                             </CustomButtom>
                         </View>

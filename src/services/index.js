@@ -32,10 +32,10 @@ export async function sendPostRequest (path, data, options) {
     headers.append('content-type', 'application/json')
 
     let url = `${APP_API_URL}${path}`;
-
-    // if (token) {
-    //     headers.append('Authorization', `Bearer ${token}`)
-    // }
+    const token = await getToken()
+    if (token) {
+        headers.append('Authorization', `Bearer ${token.token}`)
+    }
     console.log("url ->", url)
     try {
         const response = await fetch(url, {
