@@ -4,7 +4,7 @@ const initialState = {
     openButtonSheet: false
 }
 
-export default function authReducer (state = initialState, action) {
+export default function commonsReducer (state = initialState, action) {
     switch (action.type) {
         case commons.OPEN_BOTTOM_SHEET:
             return {

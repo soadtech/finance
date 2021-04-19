@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { COLORS, SIZE, WIGHT, ALIGN } from '../../helpers/constants';
 
-const CustomText = ({ children, size, weight, align, color, style }) => {
+const CustomText = ({ children, size, weight, align, color, style, action }) => {
 
     const textStyle = {
         color: color,
@@ -12,7 +12,7 @@ const CustomText = ({ children, size, weight, align, color, style }) => {
     };
 
     return (
-        <Text style={[textStyle, style]}>{children}</Text>
+        <Text onPress={action} style={[textStyle, style]}>{children}</Text>
     );
 }
 

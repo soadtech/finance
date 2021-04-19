@@ -11,16 +11,14 @@ import moment from "moment"
 import CardPeople from '../../components/CardPeople/CardPeople';
 import Hero from '../../components/Hero';
 import Body from '../../commons/Body';
+import { useSelector } from "react-redux"
 
 moment.locale('es');
 
 const Home = ({ navigation }) => {
     const [today, setToday] = useState(moment().format('LL'))
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         setToday(moment().format('LTS'))
-    //     }, 1000)
-    // }, [])
+    const dataUser = useSelector(state => state.authReducer.data)
+
     const handleGoIncomes = () => {
         navigation.navigate("Income")
     }
@@ -33,7 +31,7 @@ const Home = ({ navigation }) => {
             <Header />
             <Hero>
                 <View>
-                    <CustomText size={SIZE.MEDIUM} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>Hola, Fernando Ropero</CustomText>
+                    <CustomText size={SIZE.MEDIUM} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>Hola, {dataUser.user.name}</CustomText>
                     <CustomText size={SIZE.BIG} color="#000" align={ALIGN.LEFT} weight={WIGHT.SEMI_BOLD}>Buenas noches</CustomText>
                     <CustomText size={SIZE.SMALL} color="#7f7f7f" align={ALIGN.LEFT} weight={WIGHT.NORMAL}>{today}</CustomText>
                 </View>

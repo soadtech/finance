@@ -4,6 +4,7 @@ import Home from "../../containers/Home"
 import Income from "../../containers/Income"
 import Outcome from "../../containers/Outcome"
 import AddAction from "../../containers/AddAction";
+import Register from "../../containers/Register";
 
 export default [
     {
@@ -13,6 +14,10 @@ export default [
     {
         path: "Login",
         component: Login
+    },
+    {
+        path: "Register",
+        component: Register
     },
     {
         path: "Home",

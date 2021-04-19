@@ -8,17 +8,16 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ALIGN, SIZE, WIGHT } from '../../helpers/constants';
 import { validateEmpty } from '../../helpers';
 import { sendPostRequest } from '../../services';
-import { useDispatch } from "react-redux"
-import { loginAction } from '../../store/actions/userAction';
 
-const Login = ({ navigation }) => {
-    const dispatch = useDispatch()
+const Register = ({ navigation }) => {
     const [errors, setErrors] = useState({})
     const [email, setEmail] = useState("fernandojoseropero@gmail.com")
     const [password, setPassword] = useState("123456")
+    const [name, setName] = useState("Fernando ropero")
+    const [phone, setPhone] = useState("3022435396")
 
     const handleLogin = async () => {
-        const err = validateEmpty({ email, password })
+        const err = validateEmpty({ email, password, name, phone })
         if (Object.keys(err).length > 0) {
             setErrors(err)
             Alert.alert("Todos los campos son obligatorios")
@@ -26,15 +25,16 @@ const Login = ({ navigation }) => {
         }
         setErrors({})
         try {
-            const result = await sendPostRequest("/auth/login", { email, password }, {})
-            if (!result.success) {
-                Alert.alert(result.message)
+            const data = await sendPostRequest("/auth/signup", { email, password, name, phone }, {})
+            if (!data.success) {
+                console.log(data);
+                Alert.alert(data.message)
                 return
             }
-            dispatch(loginAction(result.data))
-            navigation.navigate("Home")
+            navigation.navigate("Login")
         } catch (error) {
-            Alert.alert(error)
+            console.log("llego aki", error);
+            //Alert.alert(error),
             setErrors({})
         }
 
@@ -49,15 +49,17 @@ const Login = ({ navigation }) => {
                         <CustomText>back!</CustomText>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <CustomInput value={email} action={setEmail} label="E-mail" placeholder="Email" />
+                        <CustomInput value={name} action={setName} label="Name" placeholder="Name" />
+                        <CustomInput value={email} action={setEmail} label="Email" placeholder="Email" />
+                        <CustomInput value={phone} action={setPhone} label="Phone" placeholder="Phone" />
                         <CustomInput value={password} action={setPassword} label="Password" placeholder="Password" />
                         <CustomText color="gray" size={SIZE.SMALL} align={ALIGN.RIGHT} weight={WIGHT.NORMAL}>Forgot password?</CustomText>
                     </View>
                     <View style={{ flex: 1, marginTop: 30 }}>
-                        <CustomButtom handler={handleLogin}>Sign in</CustomButtom>
+                        <CustomButtom handler={handleLogin}>Sign up</CustomButtom>
                     </View>
                     <View style={{ flex: 1, marginTop: 30 }}>
-                        <CustomText action={() => navigation.navigate("Register")} size={SIZE.SMALL}>You do not have an account?</CustomText>
+                        <CustomText action={() => navigation.navigate("Login")} size={SIZE.SMALL}>Do you already have an account?</CustomText>
                     </View>
                 </View>
             </KeyboardAwareScrollView>
@@ -69,4 +71,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default Login;
+export default Register;
